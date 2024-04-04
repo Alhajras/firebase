@@ -3,6 +3,7 @@ import {
   getFirestore,
   collection,
     getDocs,
+    onSnapshot,
     addDoc,
     deleteDoc, doc
 } from 'firebase/firestore'
@@ -34,13 +35,26 @@ deleteBookFor.addEventListener('submit', (e)=>{
             deleteBookFor.reset()
         })})
 
-getDocs(colRef)
-    .then((snapshot) => {
+// Old way to get data that you have to refresh after the data received
+// getDocs(colRef)
+//     .then((snapshot) => {
+//       let books = snapshot.docs.map(d => {
+//         return {
+//           ...d.data(), id:
+//           d.id
+//         }
+//       })
+//       console.log(books)
+//     })
+
+// real time collection data (update automatically the data one delete and post)
+onSnapshot(colRef, (snapshot)=>{
       let books = snapshot.docs.map(d => {
         return {
           ...d.data(), id:
           d.id
         }
       })
-      console.log(books)
-    })
+          console.log(books)
+
+})
